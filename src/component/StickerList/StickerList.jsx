@@ -34,12 +34,22 @@ export default class StickerList extends Component {
     state = {
         sticker: stickers,
         show: false,
+        findSticker: null,
     };
 
 
     show = (e) => {
-        if(e.target.nodeName === "LI") {
-
+        const event = e.target;
+        if (event.closest(".itemSticker")) {
+            const findData = event.closest(".itemSticker").dataset.sticker
+          const elementSticker = stickers.find((sticker) => {
+                sticker.id === findData;
+            });
+            this.setState(
+                {
+                    findSticker: elementSticker,
+                }
+            );
         }
         this.setState(
             (prevCount) => {
@@ -74,7 +84,7 @@ export default class StickerList extends Component {
     render() {
 
         const { sticker, show } = this.state;
-
+        console.log(sticker);
         return (
             <>
                 <StickerListEl>
@@ -82,14 +92,15 @@ export default class StickerList extends Component {
                         console.log(stick)
                         return (
                             <>
-                                <li key={stick.id} onClick={this.show}>
+                                <li key={stick.id} onClick={this.show} data-sticker={sticker.id} className="itemSticker">
                                     <Sticker src={stick.img} />
                                 </li>
 
 
                                 {show
                                     ?
-                                    <Choice sticker={stick} hide={this.hide} />
+                                    // console.log("show")
+                                    <Choice sticker={stick} hide={this.hide} findSticker={this.state.findSticker}/>
                                     : console.log("hide")
                                 }
 

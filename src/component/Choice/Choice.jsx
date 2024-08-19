@@ -58,19 +58,27 @@ border-radius: 25%;
 border: 2px solid #899D78;
 `;
 
-export default function Choice({ stick, hide }) {
+export default function Choice({ sticker, hide, findSticker }) {
     return (
+
+
         <>
+            {findSticker
+                ?
+                <BoxShadow>
+                    <div>
+                        <Sticker src={sticker.img} />
+                        <p>{sticker.label}</p>
 
-            <BoxShadow>
-                <div>
-                    <Sticker src={stick.img} />
-                    <p>{stick.label}</p>
+                        <button type="button" onClick={hide}>Hide</button>
+                    </div>
 
-                    <button type="button" onClick={hide}>Hide</button>
-                </div>
+                </BoxShadow>
+                :
+                console.log("error")
+            }
 
-            </BoxShadow>
+
         </>
     );
 
