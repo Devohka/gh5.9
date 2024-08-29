@@ -38,21 +38,25 @@ export default class StickerList extends Component {
     };
 
 
-    show = (e) => {
-        const event = e.target;
-        if (event.closest(".itemSticker")) {
-            const findData = event.closest(".itemSticker").dataset.sticker
-          const elementSticker = stickers.find((sticker) => {
-                sticker.id === findData;
-            });
-            this.setState(
-                {
-                    findSticker: elementSticker,
-                }
-            );
-        }
+    open = (e) => {
+        this.show();
+
+        const idToDelete = parseInt(e.target.closest("li")["id"]);
+        const newFruits = this.state.sticker.filter(item => {
+
+            console.log(item);
+
+            return item.id === idToDelete
+        });
+        this.setState({ findSticker: newFruits });
+    };
+
+
+    show = () => {
+
         this.setState(
             (prevCount) => {
+
                 prevCount.showStart = true;
                 return {
 
@@ -66,7 +70,6 @@ export default class StickerList extends Component {
     };
 
     hide = () => {
-        ;
         this.setState(
             (prevCount) => {
                 prevCount.showStart = false;
@@ -82,33 +85,28 @@ export default class StickerList extends Component {
     };
 
     render() {
-
-        const { sticker, show } = this.state;
-        console.log(sticker);
+        const { sticker, show , findSticker} = this.state;
+        // console.log(sticker);
+        console.log(findSticker)
         return (
             <>
                 <StickerListEl>
                     {sticker.map(stick => {
-                        console.log(stick)
+                        // console.log(stick)
                         return (
                             <>
-                                <li key={stick.id} onClick={this.show} data-sticker={sticker.id} className="itemSticker">
+                                <li id={stick.id} onClick={this.open}>
                                     <Sticker src={stick.img} />
                                 </li>
-
-
-                                {show
-                                    ?
-                                    // console.log("show")
-                                    <Choice sticker={stick} hide={this.hide} findSticker={this.state.findSticker}/>
-                                    : console.log("hide")
-                                }
-
                             </>
                         );
                     })}
                 </StickerListEl>
 
+                {show ?
+                    <Choice sticker={findSticker} hide={this.hide}></Choice>
+                    : console.log("Hide")
+                }
 
 
             </>
